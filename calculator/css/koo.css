@@ -1,0 +1,8 @@
+.tab-content{ overflow:visible; }
+.dropdown-menu > li{
+	padding:3px 0 3px 10px;
+	cursor:pointer;	
+}
+.dropdown-menu > li:hover{
+	background:#fafafa;	
+}
