@@ -6,3 +6,6 @@
 .dropdown-menu > li:hover{
 	background:#fafafa;	
 }
+.stat input{
+	width:60px;	
+}

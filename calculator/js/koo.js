@@ -13,36 +13,43 @@
 	
 	App.data = {
 		player: {
+			pid: '0000-0001',
 			soldiers: {
 				armed: {
-					attack: 	$('.armed-trained-a-soliders'),
-					defense: 	$('.armed-trained-d-soliders')
+					attack: 	$('#trained-a-soliders').val(),
+					defense: 	$('#trained-d-soliders').val()
 				},
-				unarmed: {
-					attack: 	$('.unarmed-trained-a-soldiers'),
-					defense: 	$('.unarmed-trained-d-soldiers')
-				},
-				untrained: 		$('.unarmed-untrained-soliders')
+				untrained: 		$('#num-untrained-soliders').val()
 			},
 			spies: {
-				armed: 			$('.armed-spies'),
-				unarmed: 		$('.unarmed-spies')
+				armed: 			$('#num-spies').val(),
 			},
 			sentries: {
-				armed: 			$('.armed-sentries'),
-				unarmed: 		$('.unarmed-sentries')
+				armed: 			$('#num-sentries').val(),
 			},
 			weapons: {
-				attack: 		$('.power-of-a-weapons'),
-				defense: 		$('.power-of-d-weapons'),
-				spy: 			$('.power-of-spy-tools'),
-				sentry: 		$('.power-of-sentry-tools'),
+				attack: {
+					power: 		$('#power-a-weapons').val(),
+					quantity:	$('#num-a-weapons').val()
+				},
+				defense: {
+					power:		$('#power-d-weapons').val(),
+					quantity:	$('#num-d-weapons').val(),
+				},
+				spy: {
+					power:		$('#power-spy-tools').val(),
+					quantity:	$('#num-spy-tools').val()
+				},
+				sentry: {
+					power:		$('#power-sentry-tools').val(),
+					quantity:	$('#num-sentry-tools').val()
+				}
 			}, 
 			technology: {
-				attack: 		$('.fortification-a-level'),
-				defense: 		$('.fortification-d-level'),
-				covert: 		$('.covert-skill-level')
-			},
+				attack: 		$('#fortification-a-level').val(),
+				defense: 		$('#fortification-d-level').val(),
+				covert: 		$('#covert-skill-level').val()
+			}
 		}, // player
 		race: {
 			race1: {
@@ -103,6 +110,9 @@
 		} // race
 		
 	};
+	App.getPlayerData = function( pid){
+		console.log( 'yeah', pid);
+	};
 	
 	window.App = App;
 	
@@ -116,21 +126,24 @@
      * Caches GUI controls. Binds all delegated event listeners for GUI controls
      */
     function init(){
-        /*
-         Cached GUI controls. All jQuery selectors should be cached here to prevent
-         multiple DOM queries for the same element.
-         */
-		 
+        // Preload input boxes val
+		$('#stats input').each(function(){
+			$(this).val( $(this).attr('placeholder') );
+		});
+		
+		 console.log( 'loaded');
 		 // Race select
 		 $('#race li').on('click', function(e){
-			console.log( App.data.test); 
+			console.log( $(this).data('race')); 
 		 });
 
 				
     } // init
 
+
     // Initialize module
     $document.ready(init);
+	
 
 	
 })(jQuery,jQuery(window),jQuery(document));
@@ -138,9 +151,6 @@
 
 jQuery(document).ready(function($) {
 	
-	$('#race li').on('click', function(e){
-		console.log( 'test', App.data.test2); 
-	});
-
+console.log( App.data);
 
 });
