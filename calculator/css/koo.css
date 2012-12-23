@@ -6,6 +6,18 @@
 .dropdown-menu > li:hover{
 	background:#fafafa;	
 }
-.stat input{
+.stat input,
+#stats input{
 	width:60px;	
+}
+.nav-tabs .current{
+	text-align: left;
+	display: block;
+	color: #AAA;
+	font-style: italic;	
+}
+input.equation{
+	width:96%;
+	display:block;
+	height:50px;	
 }

@@ -27,11 +27,11 @@
         <div class="tabbable tabs-left">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#general-settings" data-toggle="tab">General Settings</a></li>
-                <li><a href="#strike-action" data-toggle="tab">Strike Action</a></li>
-                <li><a href="#defensive-action" data-toggle="tab">Defensive Action</a></li>
-                <li><a href="#spy-rating" data-toggle="tab">Spy Rating</a></li>
-                <li><a href="#sentry-rating" data-toggle="tab">Sentry Rating</a></li>
-                <li><a href="#overall-ranking" data-toggle="tab">Overall Ranking</a></li>
+                <li><a href="#strike-action" data-toggle="tab">Strike Action<span class="current SA">#</span></a></li>
+                <li><a href="#defensive-action" data-toggle="tab">Defensive Action<span class="current">#</span></a></li>
+                <li><a href="#spy-rating" data-toggle="tab">Spy Rating<span class="current">#</span></a></li>
+                <li><a href="#sentry-rating" data-toggle="tab">Sentry Rating<span class="current">#</span></a></li>
+                <li><a href="#overall-ranking" data-toggle="tab">Overall Ranking<span class="current">#</span></a></li>
             </ul>
  
  <!-- ==============================================
@@ -40,26 +40,33 @@
            
             <div class="tab-content">
                 <div class="tab-pane active" id="general-settings">
-                	<h3>General Settings</h3>
-                    
-                    <div id="race" class="btn-group">
-                        <a class="btn dropdown-toggle btn-info btn-large" data-toggle="dropdown" href="#">
-                            <span class="race-selected">Select Race</span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                        	<li data-race="race1">Race 1</li>
-                            <li data-race="race2">Race 2</li>
-                            <li data-race="race3">Race 3</li>
-                            <li data-race="race4">Race 4</li>
-                            <li data-race="race5">Race 5</li>
-                        </ul>
-                    </div>
-                    <div class="row">
-                    <div class="span10">
-                    <table id="stats" class="table table-striped">
-                    <thead><tr><th>Statistic</th><th>Value</th><th>Statistic</th><th>Value</th></tr></thead>
-                    <tbody>
+					<div class="row">
+                        <div class="span4">
+                            <h3>General Settings</h3>
+        
+                            <div id="race" class="btn-group">
+                                <a class="btn dropdown-toggle btn-info btn-large" data-toggle="dropdown" href="#">
+                                    <span class="race-selected">Select Race</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li data-race="race1">Race 1</li>
+                                    <li data-race="race2">Race 2</li>
+                                    <li data-race="race3">Race 3</li>
+                                    <li data-race="race4">Race 4</li>
+                                    <li data-race="race5">Race 5</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="race-stats">
+                            	<span class="race-name"></span>
+                                <ul class="race-bonus"></ul>
+                            </div>
+                        </div><!-- .span4 -->
+                        <div class="span5">
+                            <table id="stats" class="table table-striped">
+                            	<thead><tr><th>Statistic</th><th>Value</th><th>Statistic</th><th>Value</th></tr></thead>
+                            	<tbody>
 <tr>
 <td># Trained (A) Soldiers</td>				<td><input id="trained-a-soliders" type="text" placeholder="100" val="100"></td>
 <td># Trained (D) Soldiers</td>				<td><input id="trained-d-soliders" type="text" placeholder="90"  val="90"></td></tr>
@@ -86,11 +93,11 @@
 <td>Power of Sentry Tools</td>				<td><input id="power-sentry-tools" type="text" placeholder="0" val="0"></td>
 <td>Covert Skill level</td>					<td><input id="covert-skill-level" type="text" placeholder="0" val="0"></td></tr>
 <tr>
-                    	</tbody>
-					</table>
-                </div><!-- .span10 -->
+                            </tbody>
+                        </table>
+                	</div><!-- .span5 -->
                 </div><!-- .row -->
-                </div>
+            </div>
                 
 <!-- ==============================================
 	#STRIKE ACTION
@@ -99,7 +106,23 @@
                 <div class="tab-pane" id="strike-action">
                     <div class="row">
                         <div class="span5">
-                            <h3>Strike Action: <span id="SA">#</span></h3>
+                            <h3>Strike Action: <span class="SA">#</span></h3>
+                            <input id="SA-equation" type="text" class="equation" placeholder="((A*5*C)+(B*4*C)+(D*5)+(E*4))*((1+(0.333*F))*G)" val="((A*5*C)+(B*4*C)+(D*5)+(E*4))*((1+(0.333*F))*G)">
+                            <pre>((A*5*C)+(B*4*C)+(D*5)+(E*4))*((1+(0.333*F))*G)</pre>
+                            <p>Where:
+                            	<ul>
+                                <li>A = Amount of armed trained soldiers</li>
+                                <li>B = Amount of armed untrained soldiers</li>
+                                <li>C = Power of weapons</li>
+                                <li>D = Amount of unarmed trained soliders</li>
+                                <li>E = Amount of unarmed untrained soldiers</li>
+                                <li>F = Fortification level 1-12 (none? remove (1+0.33*F) from formula</li>
+                                <li>G = Race bonus</li>
+                                </ul>
+                            </p>
+                            <p><strong>Real Damage</strong> is calculated as (SA* rand# (~70%) )</p>
+                            <button id="calc-real-damage" class="btn btn-danger btn-large">Calculate Real Damage</button>
+                            <h4>Real Damage: <span class="real-damage">#</span></h4>
                         </div>
                         
                         <div class="span4"> <!-- Attack stat table -->
@@ -129,6 +152,22 @@
 					<div class="row">
 	                    <div class="span5">
 	                        <h3>Defensive Action: <span id="DA">#</span></h3>
+                            <input id="DA-equation" type="text" class="equation" placeholder="((A*5*C)+(B*4*C)+(D*5)+(E*4))*((1+(0.333*F))*G)" val="((A*5*C)+(B*4*C)+(D*5)+(E*4))*((1+(0.333*F))*G)">
+                            <pre>((A*5*C)+(B*4*C)+(D*5)+(E*4))*((1+(0.333*F))*G)</pre>
+                            <p>Where:
+                            	<ul>
+                                <li>A = Amount of armed trained soldiers</li>
+                                <li>B = Amount of armed untrained soldiers</li>
+                                <li>C = Power of weapons</li>
+                                <li>D = Amount of unarmed trained soliders</li>
+                                <li>E = Amount of unarmed untrained soldiers</li>
+                                <li>F = Fortification level 1-12 (none? remove (1+0.33*F) from formula</li>
+                                <li>G = Race bonus</li>
+                                </ul>
+                            </p>
+                            <p><strong>Counter Damage</strong> is calculated as (DA* rand# (~70%) )</p>
+                            <button id="calc-counter-damage" class="btn btn-danger btn-large">Calculate Counter Damage</button>
+                            <h4>Counter Damage: <span class="counter-damage">#</span></h4>                            
                         </div>
                         <div class="span4"> <!-- Attack stat table -->
                             <table class="table table-striped">
@@ -157,6 +196,17 @@
 					<div class="row">
 	                    <div class="span5">
 		                    <h3>Spy Rating: <span id="ACA">#</span></h3>
+							<input id="spy-equation" type="text" class="equation" placeholder="((A*C*2^D)+(B*2^D))*E" val="((A*C*2^D)+(B*2^D))*E">
+                            <pre>((A*C*2<sup>D</sup>)+(B*2<sup>D</sup>))*E</pre>
+                            <p>Where:
+                            	<ul>
+                                <li>A = Amount of armed spies</li>
+                                <li>B = Amount of unarmed spies</li>
+                                <li>C = Power of spy tools</li>
+                                <li>D = Covert Skill level 1-15 (none? remove (2^D) from formula</li>
+                                <li>E = Race bonus</li>
+                                </ul>
+                            </p>
 	                    </div>
                         <div class="span4"> <!-- Attack stat table -->
                             <table class="table table-striped">
@@ -183,6 +233,17 @@
 					<div class="row">
     					<div class="span5">
 	                        <h3>Sentry Rating: <span id="DCA">#</span></h3>
+							<input id="sentry-equation" type="text" class="equation" placeholder="((A*C*2^D)+(B*2^D))*E" val="((A*C*2^D)+(B*2^D))*E">
+                            <pre>((A*C*2<sup>D</sup>)+(B*2<sup>D</sup>))*E</pre>
+                            <p>Where:
+                            	<ul>
+                                <li>A = Amount of armed sentries</li>
+                                <li>B = Amount of unarmed sentries</li>
+                                <li>C = Power of sentry tools</li>
+                                <li>D = Covert Skill level 1-15 (none? remove (2^D) from formula</li>
+                                <li>E = Race bonus</li>
+                                </ul>
+                            </p>
                     	</div>
                         <div class="span4"> <!-- Attack stat table -->
                             <table class="table table-striped">
@@ -209,6 +270,8 @@
                 	<div class="row">
                     	<div class="span5">
 		                    <h3>Overall Ranking: <span id="OA">#</span></h3>
+							<input id="overall-equation" type="text" class="equation" placeholder="SA + DA + ACA + DCA" val="SA + DA + ACA + DCA">
+                            <pre>SA + DA + ACA + DCA</pre>
                         </div>
                         <div class="span4"> <!-- Attack stat table -->
                             <table id="overall" class="table table-striped">
