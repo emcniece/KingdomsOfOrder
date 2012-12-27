@@ -18,13 +18,15 @@
                 margin: 40px auto;
                 position: relative;
                 width: 600px;
+				border:3px solid #fff;
+				overflow:hidden;
 			}
 			#paper{
-                height: 600px;
+                height: 1600px;
                 left: 0;
                 position: relative;
                 top: 0;
-                width: 600px;
+                width: 1600px;
 			}
             #nsw, #vic, #wa, #sa, #nt, #qld, #tas,
 			#A1, #A3, #B2, #C1, #C3, #D2, #E1, #E3,
@@ -48,20 +50,24 @@
 		<!-- raphael.js -->
         <script src="js/aus_points.js" type="text/javascript" charset="utf-8"></script>
         <script src="raphael.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/raphael-zpd.js" type="text/javascript" charset="utf-8"></script>
         <script type="text/javascript" charset="utf-8">
         window.onload = function () {
 			
 			//var grid = getHexGridWH();
 			// Go straight to the source and get the grid layout instead of actually drawing
-			var grid = new HT.Grid(600, 600);
+			var grid = new HT.Grid(1600, 1600);
 			
             //var R = Raphael("paper", 300, 300);
-            var R = Raphael("paper",600, 600);
+            var R = Raphael("paper",1600, 1600);
+			var zpd = new RaphaelZPD(R, {zoom: true, pan: true, drag: true});
+			
 			var attr = {
 				fill: "#333",
 				stroke: "#666",
 				"stroke-width": 1,
 				"stroke-linejoin": "round",
+				'draggable': false
 			};
 			
 
@@ -103,6 +109,7 @@
                 (function (st, tile) {
 					//console.log( newhex[tile].data('data').Id );
                     st[0].style.cursor = "pointer";
+					//st[0].draggable = false;
                     st[0].onmouseover = function () {
 						//console.log( st);
                         current && newhex[current].animate({fill: "#333", stroke: "#666"}, 250) && (document.getElementById(current).style.display = "");
@@ -116,13 +123,13 @@
                         current = tile;
                     };
                     st[0].onmouseout = function () {
-                        st.animate({fill: "#333", stroke: "#666", 'stroke-width':1}, 250);
+                        st.animate({fill: "#333", stroke: "#666", 'stroke-width':1, 'transform': "s1,1"}, 250);
                         st.toBack();
                         R.safari();
                     };
-					st[0].onclick = function(){
+					st[0].onclick = function(e){
 						console.log( st, this, current )
-						
+						st.animate({'transform': "s2,2r90"}, 150);
 					};
 					// Starting tile highlight
                     if (tile == "A1") {
@@ -154,6 +161,27 @@ function shadeColor(color, percent) {
     return "#"+RR+GG+BB;
 }
 
+
+jQuery(document).ready(function($) {
+    $('#paper')
+        .bind('dragstart',function( event ){
+			if ( !$(event.target).is('.handle') ) return false;
+			$( this ).addClass('active');
+        })
+        .bind('drag',function( event ){
+			$( this ).css({
+					top: event.offsetY,
+					left: event.offsetX
+					});
+		})
+        .bind('dragend',function( event ){
+                $( this ).removeClass('active');
+		});
+		
+	$('path').on('click', function(e){
+		console.log( 'her');
+	});
+}); // document.ready
 
         </script>
     </head>
